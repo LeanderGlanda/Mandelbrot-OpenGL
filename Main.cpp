@@ -66,7 +66,7 @@ int main()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // glfw window creation
-    GLFWwindow* window = glfwCreateWindow(width, height, "Mandelbrot", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(width, height, "Mandelbrot 10000", NULL, NULL);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -141,11 +141,11 @@ int main()
     // Render-Loop
     while (!glfwWindowShouldClose(window))
     {
-        if (lastIteration != maxIteration)
-        {
-            calculation();
-            lastIteration = maxIteration;
-        }
+		if (lastIteration != maxIteration)
+		{
+			calculation();
+			lastIteration = maxIteration;
+		}
 
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
@@ -249,6 +249,13 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
     calculation();
 }
 
+void changeWindowTitle(GLFWwindow* window)
+{
+    std::stringstream windowtitle;
+    windowtitle << "Mandelbrot " << maxIteration;
+    glfwSetWindowTitle(window, windowtitle.str().c_str());
+}
+
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if (action == GLFW_PRESS)
@@ -260,6 +267,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
                     maxIteration += maxIteration >= 1000 ? 1000 : maxIteration >= 100 ? 100 : 10;
                 else
                     maxIteration -= maxIteration <= 0 ? 0 : maxIteration <= 100 ? 10 : maxIteration <= 1000 ? 100 : 1000;
+                changeWindowTitle(window);
             }
         }
 }
