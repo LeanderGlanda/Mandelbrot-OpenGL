@@ -36,6 +36,7 @@ unsigned int width = 1280;
 unsigned int height = 720;
 
 int maxIteration = 10000;
+int lastIteration = 10000;
 double middlea = -1;
 double middleb = 0;
 double rangea = 5.25;
@@ -140,6 +141,12 @@ int main()
     // Render-Loop
     while (!glfwWindowShouldClose(window))
     {
+        if (lastIteration != maxIteration)
+        {
+            calculation();
+            lastIteration = maxIteration;
+        }
+
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
@@ -247,12 +254,13 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     if (action == GLFW_PRESS)
         switch(key)
         {
-        case GLFW_KEY_I:
-            if (mods == GLFW_MOD_SHIFT)
-                maxIteration += maxIteration >= 1000 ? 1000 : maxIteration >= 100 ? 100 : 10;
-            else
-                maxIteration -= maxIteration <= 0 ? 0 : maxIteration <= 100 ? 10 : maxIteration <= 1000 ? 100 : 1000;
-            calculation();
+            case GLFW_KEY_I:
+            {
+                if (mods == GLFW_MOD_SHIFT)
+                    maxIteration += maxIteration >= 1000 ? 1000 : maxIteration >= 100 ? 100 : 10;
+                else
+                    maxIteration -= maxIteration <= 0 ? 0 : maxIteration <= 100 ? 10 : maxIteration <= 1000 ? 100 : 1000;
+            }
         }
 }
 
