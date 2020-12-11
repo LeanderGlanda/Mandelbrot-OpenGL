@@ -35,12 +35,17 @@ GLuint computeShader = 0;
 unsigned int width = 1280;
 unsigned int height = 720;
 
-int maxIteration = 10000;
+#define MIDDLEA -1
+#define MIDDLEB 0
+#define RANGEA 5.25
+#define RANGEB 3
+
+int maxIteration = 100;
 int lastIteration = 10000;
-double middlea = -1;
-double middleb = 0;
-double rangea = 5.25;
-double rangeb = 3;
+double middlea = MIDDLEA;
+double middleb = MIDDLEB;
+double rangea = RANGEA;
+double rangeb = RANGEB;
 
 double zoomd_out = 1;
 
@@ -268,6 +273,39 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
                 else
                     maxIteration -= maxIteration <= 0 ? 0 : maxIteration <= 100 ? 10 : maxIteration <= 1000 ? 100 : 1000;
                 changeWindowTitle(window);
+                break;
+            }
+            case GLFW_KEY_R:
+            {
+                middlea = -1;
+                middleb = 0;
+                rangea = 5.25;
+                rangeb = 3;
+                zoomd_out = 1;
+            }
+            case GLFW_KEY_A:
+            {
+                middlea -= 0.25 / (RANGEA / rangea);
+                calculation();
+                break;
+            }
+            case GLFW_KEY_D:
+            {
+                middlea += 0.25 / (RANGEA / rangea);
+                calculation();
+                break;
+            }
+            case GLFW_KEY_W:
+            {
+                middleb += 0.25 / (RANGEB / rangeb);
+                calculation();
+                break;
+            }
+            case GLFW_KEY_S:
+            {
+                middleb -= 0.25 / (RANGEB / rangeb);
+                calculation();
+                break;
             }
         }
 }
