@@ -307,6 +307,20 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
                 calculation();
                 break;
             }
+            case GLFW_KEY_RIGHT_BRACKET:
+            {
+                rangea += -1 * 0.25 * rangea;
+                rangeb += -1 * 0.25 * rangeb;
+                zoomd_out -= -1 * 0.5;
+                calculation();
+            }
+            case GLFW_KEY_SLASH:
+            {
+                rangea += 1 * 0.25 * rangea;
+                rangeb += 1 * 0.25 * rangeb;
+                zoomd_out -= 1 * 0.5;
+                calculation();
+            }
         }
 }
 
