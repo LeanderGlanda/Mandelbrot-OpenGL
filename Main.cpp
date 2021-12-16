@@ -32,6 +32,9 @@ GLuint createComputeShader();
 
 GLuint computeShader = 0;
 
+double xBefore = 0;
+double yBefore = 0;
+
 unsigned int width = 1280;
 unsigned int height = 720;
 
@@ -85,7 +88,7 @@ int main()
     glfwSetKeyCallback(window, key_callback);
 
     // Set the right window title!
-    changeWindowTitle(window);
+    glfwSetWindowTitle(window, "Mandelbrot Set");
 
     // glad: load all OpenGL function pointers
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -224,9 +227,6 @@ void framebuffer_size_callback(GLFWwindow* window, int _width, int _height)
     calculation();
 }
 
-double xBefore = 0;
-double yBefore = 0;
-
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
     double xpos, ypos;
@@ -242,14 +242,26 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
         //std::cout << "Left mouse button pressed!\n";
         double xDiffernece = xpos - xBefore;
         double yDiffernece = ypos - yBefore;
-        middlea = ((middlea * (width / 2) - xDiffernece / zoomd_out) / (width / 2));
-        middleb = ((middleb * (height / 2) + yDiffernece / zoomd_out) / (height / 2));
+        middlea -= xDiffernece * rangea / width;
+        middleb += yDiffernece * rangeb / height;
         calculation();
     }
 }
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
+    double xpos, ypos;
+    glfwGetCursorPos(window, &xpos, &ypos);
+
+    // Set the cursor to the center, so we continue zooming into the same area
+    glfwSetCursorPos(window, width / 2, height / 2);
+
+    double xDiffernece = width / 2 - xpos;
+    double yDiffernece = height / 2 - ypos;
+
+    middlea -= xDiffernece * rangea / width;
+    middleb += yDiffernece * rangeb / height;
+
 	rangea += yoffset * 0.25 * rangea;
 	rangeb += yoffset * 0.25 * rangeb;
     zoomd_out -= yoffset * 0.5;
@@ -310,19 +322,23 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
                 calculation();
                 break;
             }
+            // Plus key on QWERTZ
             case GLFW_KEY_RIGHT_BRACKET:
             {
                 rangea += -1 * 0.25 * rangea;
                 rangeb += -1 * 0.25 * rangeb;
                 zoomd_out -= -1 * 0.5;
                 calculation();
+                break;
             }
+            // Minus key on QWERTZ
             case GLFW_KEY_SLASH:
             {
                 rangea += 1 * 0.25 * rangea;
                 rangeb += 1 * 0.25 * rangeb;
                 zoomd_out -= 1 * 0.5;
                 calculation();
+                break;
             }
         }
 }
