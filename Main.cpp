@@ -2,7 +2,7 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <chrono>
-#include <windows.h>
+//#include <windows.h>
 
 #include "Shader.h"
 
@@ -16,10 +16,10 @@
 }
 
 //enable optimus!
-extern "C" {
+/*extern "C" {
     _declspec(dllexport) DWORD NvOptimusEnablement = 1;
     _declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
-}
+}*/
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
@@ -85,7 +85,7 @@ int main()
     glfwSetKeyCallback(window, key_callback);
 
     // Set the right window title!
-    changeWindowTitle(window);
+    glfwSetWindowTitle(window, "Mandelbrot-OpenGL");
 
     // glad: load all OpenGL function pointers
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
